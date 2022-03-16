@@ -97,6 +97,10 @@ public class PizzaService
     public void UpdatePizza(int PizzaId, Pizza newPizza)
     {
             var pizzaToUpdate = _context.Pizzas.Find(PizzaId);
+            pizzaToUpdate = _context.Pizzas
+            .Include(p => p.Toppings)
+            //.Include(p => p.Sauce)
+            .SingleOrDefault(p => p.Id == PizzaId);
             
 
             if (pizzaToUpdate is null)
@@ -106,21 +110,29 @@ public class PizzaService
 
             pizzaToUpdate.Name = newPizza.Name;
             pizzaToUpdate.Sauce = newPizza.Sauce;
+
+
+            //_context.Toppings.Find
             //intenté eliminar los anteriores ingredientes que tuviese la pizza a eliminar
             //y después agregar de nuevo uno por uno, pero no jaló
             //Hace falta actualizar los ingredientes
-            //var toppingsPizza = pizzaToUpdate.Toppings.ToList();
+            var toppingsPizza = pizzaToUpdate.Toppings.ToList();
             
-            /* foreach (var item in toppingsPizza)
+            foreach (var item in toppingsPizza)
             {
+                pizzaToUpdate.Toppings.Remove(item);
                 Console.WriteLine(item);
                 
-            } 
+                
+            }
+            _context.SaveChanges();
+
              foreach (var item in newPizza.Toppings.ToList())
             {   
-                Console.WriteLine(item);
-                pizzaToUpdate.Toppings.Add(item);
-            } */
+                Console.WriteLine("entra aquí");
+                AddTopping(newPizza.Id, item.Id);
+
+            } 
             
             Console.WriteLine("Se actualizó");
             _context.SaveChanges();
