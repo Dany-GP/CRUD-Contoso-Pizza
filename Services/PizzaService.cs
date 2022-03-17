@@ -111,11 +111,6 @@ public class PizzaService
             pizzaToUpdate.Name = newPizza.Name;
             pizzaToUpdate.Sauce = newPizza.Sauce;
 
-
-            //_context.Toppings.Find
-            //intenté eliminar los anteriores ingredientes que tuviese la pizza a eliminar
-            //y después agregar de nuevo uno por uno, pero no jaló
-            //Hace falta actualizar los ingredientes
             var toppingsPizza = pizzaToUpdate.Toppings.ToList();
             
             foreach (var item in toppingsPizza)

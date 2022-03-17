@@ -127,7 +127,7 @@ export class PizzaCatalogo extends Component{
         if(this.state.accion==2){
             
             console.log("va a actualizar");
-
+            //se realiza la petición PUT con la pizza en el cuerpo
             const options = {
                 method: "PUT",
                 headers: {
@@ -142,9 +142,9 @@ export class PizzaCatalogo extends Component{
                         return response.status;      }
                 ).then(
                     (code) => {
+                        //se recibe el resultado de la petición PUT
                         if(code==201){
                             console.log(code);
-                            
                             const  pizzas = Array.from( this.state.data);
                             pizzas.push({name: pizza.name});
                             this.componentDidMount();                                        
@@ -171,11 +171,13 @@ export class PizzaCatalogo extends Component{
 
     editar  = (item) => {   
         console.log(item);
+        //se obtiene el contenido de la pizza a partir de su ID
         fetch('pizza/'+item.id)
             .then(response => { return response.json()} )
                 .then(o => {
                     console.log(o);
                     this.setState({id: o.id});
+                    //Se asigna opción 2 a acción: editar
                     this.setState({accion: 2, pizzaE: o, name: o.name})
                 })
                 ;
@@ -253,6 +255,7 @@ export class PizzaCatalogo extends Component{
                                         <th scope="row">{pizza.id}</th>
                                         <td>{pizza.name}</td>
                                         <td>{pizza.sauce}</td>
+                                        {/* se manda llamar la función editar */}
                                         <td><Button color="primary" onClick={() => this.editar(pizza) } >
                                                 Edit
                                             </Button> {' '}
